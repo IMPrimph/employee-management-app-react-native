@@ -9,4 +9,4 @@ const EmployeeSchema = new mongoose.Schema({
     position: String
 })
 
-mongoose.model("Employee", EmployeeSchema)
+module.exports = mongoose.model("Employee", EmployeeSchema)
