@@ -39,8 +39,15 @@ const CreateEmployee = ({ navigation }) => {
             allowsEditing: true,
             aspect: [1, 1],
             quality: 1,
-        });
-        console.log(result)
+        })
+        if (!result.cancelled) {
+            let newFile = {
+                uri: result.uri,
+                type: `test/${result.uri.split(".")[1]}`,
+                name: `test.${result.uri.split(".")[1]}`
+            }
+            handleUpload(newFile)
+        }
     }
 
     const pickFromCamera = async () => {
@@ -50,7 +57,32 @@ const CreateEmployee = ({ navigation }) => {
             aspect: [1, 1],
             quality: 1,
         });
-        console.log(result)
+        if (!result.cancelled) {
+            let newFile = {
+                uri: result.uri,
+                type: `test/${result.uri.split(".")[1]}`,
+                name: `test.${result.uri.split(".")[1]}`
+            }
+            handleUpload(newFile)
+        }
+    }
+
+    const handleUpload = image => {
+        const data = new FormData()
+        data.append('file', image)
+        data.append('upload_preset', "employee")
+        data.append('cloud_name', "dmynpph6w")
+
+        fetch("https://api.cloudinary.com/v1_1/dmynpph6w/image/upload", {
+            method: 'POST',
+            body: data
+        })
+            .then(res => res.json())
+            .then(data => {
+                // console.log(data)
+                setPicture(data.url)
+                setModal(false)
+            })
     }
 
     return (
@@ -100,7 +132,7 @@ const CreateEmployee = ({ navigation }) => {
             />
             <Button
                 style={styles.inputStyles}
-                icon='upload'
+                icon={picture === "" ? 'upload' : 'check'}
                 theme={theme}
                 mode='contained'
                 onPress={() => setModal(true)}
