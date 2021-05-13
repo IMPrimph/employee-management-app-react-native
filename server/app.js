@@ -16,14 +16,40 @@ mongoose.connect(DB_URL, {
     console.log("DB Connected")
 })
 
-app.get('/', (req, res) => {
-    res.send('Hi')
+app.get('/', async (req, res) => {
+    const employees = await Employee.find({})
+        .then(() => res.send(employees))
+        .catch(err => console.log(err))
 })
 
 app.post('/send-data', async (req, res) => {
     const employee = new Employee(req.body)
-    await employee.save().then(() => console.log(employee))
-    res.send('Posted')
+    await employee.save()
+        .then(() => {
+            console.log(employee)
+            res.send("Posted")
+        })
+        .catch(err => console.log(err))
+})
+
+app.post('/delete', async (req, res) => {
+    await Employee.findByIdAndDelete(req.body.id)
+        .then(data => {
+            console.log(data)
+            res.send('Deleted')
+        })
+        .catch(err => console.log(err))
+
+})
+
+app.post('/update', async (req, res) => {
+    const { id } = req.body
+    await Employee.findByIdAndUpdate(id, { ...req.body })
+        .then(data => {
+            console.log(data)
+            res.send(data)
+        })
+        .catch(err => console.log(err))
 })
 
 app.listen(3000, () => {
