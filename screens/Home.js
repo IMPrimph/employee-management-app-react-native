@@ -6,11 +6,9 @@ import { FAB } from 'react-native-paper'
 
 function Home({ navigation }) {
     const data = [
-        { id: "1", name: 'Jay', position: 'Web dev' },
-        { id: "2", name: 'Noob', position: 'Android' },
-        { id: "3", name: 'Bob', position: 'ML' },
-        { id: "4", name: 'Potato', position: 'VM' },
-        { id: "5", name: 'Potato', position: 'VM' },
+        { id: "1", name: 'Jay', email: 'abc@abc.com', salary: '10 lpa', phone: '123', picture: 'https://bit.ly/3uJkAb1', position: 'Web dev' },
+        { id: "2", name: 'Noob', email: 'noob@abc.com', salary: '20 lpa', phone: '456', picture: 'https://bit.ly/3uJkAb1', position: 'Android' },
+        { id: "3", name: 'Bob', email: 'bob@abc.com', salary: '30 lpa', phone: '789', picture: 'https://bit.ly/3uJkAb1', position: 'ML' },
     ]
 
     const renderList = ((item) => {
@@ -18,7 +16,7 @@ function Home({ navigation }) {
             <Card
                 key={item.id}
                 style={styles.myCard}
-                onPress={() => navigation.navigate('Profile')}
+                onPress={() => navigation.navigate('Profile', { item })}
             >
                 <View style={styles.cardView}>
                     <Image

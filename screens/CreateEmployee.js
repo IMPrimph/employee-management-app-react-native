@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Modal } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Modal, Platform } from 'react-native';
 import { TextInput, Button } from 'react-native-paper'
+import * as ImagePicker from 'expo-image-picker';
 
 const CreateEmployee = ({ navigation }) => {
     const [name, setName] = useState("")
@@ -9,6 +10,48 @@ const CreateEmployee = ({ navigation }) => {
     const [salary, setSalary] = useState("")
     const [picture, setPicture] = useState("")
     const [modal, setModal] = useState(false)
+
+    useEffect(() => {
+        (async () => {
+            if (Platform.OS !== 'web') {
+                const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+                if (status !== 'granted') {
+                    alert('Sorry, we need camera roll permissions to make this work!')
+                }
+            }
+        })();
+    }, [])
+
+    useEffect(() => {
+        (async () => {
+            if (Platform.OS !== 'web') {
+                const { status } = await ImagePicker.requestCameraPermissionsAsync();
+                if (status !== 'granted') {
+                    alert('Sorry, we need camera permissions to make this work!')
+                }
+            }
+        })();
+    }, [])
+
+    const pickFromGallery = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 1,
+        });
+        console.log(result)
+    }
+
+    const pickFromCamera = async () => {
+        let result = await ImagePicker.launchCameraAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 1,
+        });
+        console.log(result)
+    }
 
     return (
         <View style={styles.root}>
@@ -87,7 +130,7 @@ const CreateEmployee = ({ navigation }) => {
                             icon='camera'
                             theme={theme}
                             mode='contained'
-                            onPress={() => setModal(false)}
+                            onPress={() => pickFromCamera()}
                         >
                             Camera
                         </Button>
@@ -95,7 +138,7 @@ const CreateEmployee = ({ navigation }) => {
                             icon='image-area'
                             theme={theme}
                             mode='contained'
-                            onPress={() => setModal(false)}
+                            onPress={() => pickFromGallery()}
                         >
                             Gallery
                         </Button>

@@ -15,7 +15,8 @@ const myOptions = {
   headerTintColor: 'white',
   headerStyle: {
     backgroundColor: '#006aff'
-  }
+  },
+  headerTitleAlign: 'center'
 }
 
 function App() {

@@ -4,13 +4,15 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { Button, Card, Title } from 'react-native-paper'
 import { MaterialIcons, Feather } from '@expo/vector-icons'
 
-const Profile = () => {
+const Profile = (props) => {
 
-    const openDial = () => {
+    const { id, name, email, salary, phone, picture, position } = props.route.params.item;
+
+    const openDial = (phone) => {
         if (Platform.OS === 'android') {
-            Linking.openURL("tel:12345")
+            Linking.openURL(`tel:${phone}`)
         } else {
-            Linking.openURL("telprompt:12345")
+            Linking.openURL(`telprompt:${phone}`)
         }
     }
 
@@ -23,22 +25,22 @@ const Profile = () => {
             <View style={{ alignItems: 'center' }}>
                 <Image
                     style={{ width: 120, height: 120, marginTop: -50, borderRadius: 60 }}
-                    source={{ uri: 'https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mzd8fHBlcnNvbnxlbnwwfDJ8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60' }}
+                    source={{ uri: picture }}
                 />
             </View>
             <View style={{ alignItems: 'center', margin: 15 }}>
-                <Title>Jay</Title>
-                <Text style={{ fontSize: 20 }}>Web developer</Text>
+                <Title>{name}</Title>
+                <Text style={{ fontSize: 20 }}>{position}</Text>
             </View>
 
-            <Card style={styles.myCard} onPress={() => Linking.openURL("mailto:abc@gmail.com")}>
+            <Card style={styles.myCard} onPress={() => Linking.openURL(`mailto:${email}`)}>
                 <View style={styles.cardContent}>
                     <MaterialIcons
                         name='email'
                         size={32}
                         color='#006aff'
                     />
-                    <Text style={styles.myText}>abc@gmail.com</Text>
+                    <Text style={styles.myText}>{email}</Text>
                 </View>
             </Card>
 
@@ -49,7 +51,7 @@ const Profile = () => {
                         size={32}
                         color='#006aff'
                     />
-                    <Text style={styles.myText}>8500651791</Text>
+                    <Text style={styles.myText}>{phone}</Text>
                 </View>
             </Card>
 
@@ -60,7 +62,7 @@ const Profile = () => {
                         size={32}
                         color='#006aff'
                     />
-                    <Text style={styles.myText}>4,00,000</Text>
+                    <Text style={styles.myText}>{salary}</Text>
                 </View>
             </Card>
 
