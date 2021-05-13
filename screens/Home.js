@@ -4,24 +4,22 @@ import { StyleSheet, FlatList, Text, View, Image } from 'react-native';
 import { Card } from 'react-native-paper'
 import { FAB } from 'react-native-paper'
 
-function Home() {
+function Home({ navigation }) {
     const data = [
         { id: "1", name: 'Jay', position: 'Web dev' },
         { id: "2", name: 'Noob', position: 'Android' },
         { id: "3", name: 'Bob', position: 'ML' },
         { id: "4", name: 'Potato', position: 'VM' },
         { id: "5", name: 'Potato', position: 'VM' },
-        { id: "6", name: 'Potato', position: 'VM' },
-        { id: "7", name: 'Potato', position: 'VM' },
-        { id: "8", name: 'Potato', position: 'VM' },
-        { id: "9", name: 'Potato', position: 'VM' },
-        { id: "10", name: 'Potato', position: 'VM' },
-        { id: "11", name: 'Potato', position: 'VM' }
     ]
 
     const renderList = ((item) => {
         return (
-            <Card key={item.id} style={styles.myCard}>
+            <Card
+                key={item.id}
+                style={styles.myCard}
+                onPress={() => navigation.navigate('Profile')}
+            >
                 <View style={styles.cardView}>
                     <Image
                         style={{ width: 60, height: 60, borderRadius: 30 }}
@@ -37,7 +35,7 @@ function Home() {
     })
 
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             <FlatList
                 data={data}
                 renderItem={({ item }) => {
@@ -46,6 +44,7 @@ function Home() {
                 keyExtractor={item => item.id}
             />
             <FAB
+                onPress={() => navigation.navigate('Create')}
                 style={styles.fab}
                 icon='plus'
                 theme={{ colors: { accent: '#006aff' } }}

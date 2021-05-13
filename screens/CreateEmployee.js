@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Modal } from 'react-native';
 import { TextInput, Button } from 'react-native-paper'
 
-const CreateEmployee = () => {
+const CreateEmployee = ({ navigation }) => {
     const [name, setName] = useState("")
     const [phone, setPhone] = useState("")
     const [email, setEmail] = useState("")
