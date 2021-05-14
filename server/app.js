@@ -7,7 +7,7 @@ const app = express()
 
 app.use(bodyParser.json())
 
-const DB_URL = 'mongodb+srv://primph:noobie@cluster0.n57br.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+const DB_URL = YOUR_DB_URL
 
 mongoose.connect(DB_URL, {
     useNewUrlParser: true,
