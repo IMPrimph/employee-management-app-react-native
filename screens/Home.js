@@ -1,27 +1,46 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, FlatList, Text, View, Image } from 'react-native';
-import { Card } from 'react-native-paper'
-import { FAB } from 'react-native-paper'
+import React, { useEffect } from 'react';
+import { useState } from 'react';
+import { StyleSheet, Alert, FlatList, Text, View, Image } from 'react-native';
+import { Card, FAB } from 'react-native-paper'
 
 function Home({ navigation }) {
-    const data = [
-        { id: "1", name: 'Jay', email: 'abc@abc.com', salary: '10 lpa', phone: '123', picture: 'https://bit.ly/3uJkAb1', position: 'Web dev' },
-        { id: "2", name: 'Noob', email: 'noob@abc.com', salary: '20 lpa', phone: '456', picture: 'https://bit.ly/3uJkAb1', position: 'Android' },
-        { id: "3", name: 'Bob', email: 'bob@abc.com', salary: '30 lpa', phone: '789', picture: 'https://bit.ly/3uJkAb1', position: 'ML' },
-    ]
+
+    const [data, setData] = useState([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        fetchData()
+    }, [])
+
+    const fetchData = () => {
+        fetch("http://10.0.2.2:3000/")
+            .then(res => res.json())
+            .then(results => {
+                setData(results)
+                setLoading(false)
+            }).catch(err => {
+                Alert.alert("Something went wrong")
+            })
+    }
+
+    // const data = [
+    //     { _id: "1", name: 'Jay', email: 'abc@abc.com', salary: '10 lpa', phone: '123', picture: 'https://bit.ly/3uJkAb1', position: 'Web dev' },
+    //     { _id: "2", name: 'Noob', email: 'noob@abc.com', salary: '20 lpa', phone: '456', picture: 'https://bit.ly/3uJkAb1', position: 'Android' },
+    //     { _id: "3", name: 'Bob', email: 'bob@abc.com', salary: '30 lpa', phone: '789', picture: 'https://bit.ly/3uJkAb1', position: 'ML' },
+    // ]
 
     const renderList = ((item) => {
         return (
             <Card
-                key={item.id}
+                key={item._id}
                 style={styles.myCard}
                 onPress={() => navigation.navigate('Profile', { item })}
             >
                 <View style={styles.cardView}>
                     <Image
                         style={{ width: 60, height: 60, borderRadius: 30 }}
-                        source={{ uri: "https://bit.ly/3uJkAb1" }}
+                        source={{ uri: item.picture }}
                     />
                     <View style={{ marginLeft: 10 }}>
                         <Text style={styles.text}>{item.name}</Text>
@@ -34,12 +53,15 @@ function Home({ navigation }) {
 
     return (
         <View style={{ flex: 1 }}>
+
             <FlatList
                 data={data}
                 renderItem={({ item }) => {
                     return renderList(item)
                 }}
-                keyExtractor={item => item.id}
+                onRefresh={() => fetchData()}
+                refreshing={loading}
+                keyExtractor={item => item._id}
             />
             <FAB
                 onPress={() => navigation.navigate('Create')}
@@ -47,6 +69,7 @@ function Home({ navigation }) {
                 icon='plus'
                 theme={{ colors: { accent: '#006aff' } }}
             />
+
         </View>
     )
 }
