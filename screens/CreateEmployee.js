@@ -164,13 +164,14 @@ const CreateEmployee = ({ navigation, route }) => {
     }
 
     return (
-        <KeyboardAvoidingView style={styles.root} behavior='position'>
+        <KeyboardAvoidingView style={styles.root} enabled={enableShift} behavior='position'>
             <View>
                 <TextInput
                     label='Name'
                     value={name}
                     style={styles.inputStyles}
                     mode='outlined'
+                    onFocus={() => setEnableShift(false)}
                     theme={theme}
                     onChangeText={text => setName(text)}
                 />
@@ -179,6 +180,7 @@ const CreateEmployee = ({ navigation, route }) => {
                     keyboardType='number-pad'
                     value={phone}
                     style={styles.inputStyles}
+                    onFocus={() => setEnableShift(false)}
                     mode='outlined'
                     theme={theme}
                     onChangeText={text => setPhone(text)}
@@ -186,6 +188,7 @@ const CreateEmployee = ({ navigation, route }) => {
                 <TextInput
                     label='Email'
                     value={email}
+                    onFocus={() => setEnableShift(false)}
                     keyboardType='email-address'
                     style={styles.inputStyles}
                     mode='outlined'
@@ -195,6 +198,7 @@ const CreateEmployee = ({ navigation, route }) => {
                 <TextInput
                     label='Salary'
                     value={salary}
+                    onFocus={() => setEnableShift(true)}
                     keyboardType='number-pad'
                     style={styles.inputStyles}
                     mode='outlined'
@@ -203,6 +207,7 @@ const CreateEmployee = ({ navigation, route }) => {
                 />
                 <TextInput
                     label='Position'
+                    onFocus={() => setEnableShift(true)}
                     value={position}
                     style={styles.inputStyles}
                     mode='outlined'
